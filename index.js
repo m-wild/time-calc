@@ -5,6 +5,8 @@ function calc() {
   const endHour = +document.getElementById('endHour').value;
   const endMinute = +document.getElementById('endMinute').value;
 
+  const overnight = document.getElementById('overnight').checked;
+
   let startTime = moment(`${startHour}:${startMinute}`, 'HH:mm');
   if (!startTime.isValid())
     window.alert('Invalid start time');
@@ -12,6 +14,9 @@ function calc() {
   let endTime = moment(`${endHour}:${endMinute}`, 'HH:mm');
   if (!endTime.isValid())
     window.alert('Invalid end time');
+
+  if (overnight)
+    endTime = endTime.add(1, 'day');
 
 
 
