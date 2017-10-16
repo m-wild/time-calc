@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+
+  <main>
+    <div>
+      <label>Start Hour</label>
+      <input type="number" id="startHour">
+    </div>
+    <div>
+      <label>Start Minute</label>
+      <input type="number" id="startMinute">
+    </div>
+
+    <div>
+      <label>End Hour</label>
+      <input type="number" id="endHour">
+    </div>
+    <div>
+      <label>End Minute</label>
+      <input type="number" id="endMinute">
+    </div>
+
+
+      <div>
+        <label>Break Minutes</label>
+        <input type="number" id="breakMinutes">
+      </div>
+
+    <button onclick="calc()">Calculate</button>
+
+    <div>Total Time Formatted: <span id="totalTimeFormatted"></span></div>
+    <div>Total Time Fraction: <span id="totalTimeDecimal"></span></div>  
+
+
+  </main>
+
+  <script type="text/javascript">
+    function calc() {
+      var startHour = +document.getElementById('startHour').value;
+      var startMinute = +document.getElementById('startMinute').value;
+
+      var endHour = +document.getElementById('endHour').value;
+      var endMinute = +document.getElementById('endMinute').value; 
+
+      var breakMinutes = +document.getElementById('breakMinutes').value;
+
+      var totalHours = endHour - startHour;
+      var totalMinutes = endMinute - startMinute;
+
+      totalMinutes -= breakMinutes;
+
+      if (totalMinutes < 0) 
+      {
+        totalHours += Math.floor(totalMinutes / 60);
+        totalMinutes += 60;
+      }
+
+      document.getElementById('totalTimeFormatted').innerText = 
+          ('0' + totalHours).slice(-2)
+          + ':'
+          + ('0' + totalMinutes).slice(-2);
+
+      document.getElementById('totalTimeDecimal').innerText = 
+          (totalHours + (totalMinutes / 60)).toFixed(2);
+
+    }
+  </script>
+
+</body>
+</html>
