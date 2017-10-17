@@ -1,3 +1,12 @@
+angular.module('timesheetApp', [])
+  .controller('TimesheetController', function() {
+
+    this.weekStarting = moment().startOf('isoWeek').toDate();
+
+    this.daysOfWeek = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+  });
+
 function calc() {
   const startHour = +document.getElementById('startHour').value;
   const startMinute = +document.getElementById('startMinute').value;
@@ -17,9 +26,6 @@ function calc() {
 
   if (overnight)
     endTime = endTime.add(1, 'day');
-
-
-
 
   let totalTimeDecimal = endTime.diff(startTime, 'hours', true);
 

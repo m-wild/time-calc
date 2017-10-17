@@ -1,46 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
 <head>
+  <link rel="stylesheet/less" type="text/css" href="styles.less" />
+  <script src="https://cdn.jsdelivr.net/npm/less@2.7.2/dist/less.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/angular@1.6.6/angular.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.19.1/moment.min.js"></script>
+  <script src="index.js"></script>
+
+
 </head>
 
-<body>
+<body ng-app="timesheetApp">
 
-  <main>
-    <div>
-      <label>Start Hour</label>
-      <input type="number" id="startHour">
-    </div>
-    <div>
-      <label>Start Minute</label>
-      <input type="number" id="startMinute">
-    </div>
+  <main ng-controller="TimesheetController as timesheet">
 
-    <div>
-      <label>End Hour</label>
-      <input type="number" id="endHour">
-    </div>
-    <div>
-      <label>End Minute</label>
-      <input type="number" id="endMinute">
-    </div>
+    <pre>{{timesheet.debug}}</pre>
 
-    <div>
-      <label>Overnight</label>
-      <input type="checkbox" id="overnight">
-    </div>
+    <input name="weekStarting" ng-model="timesheet.weekStarting" type="date" />
 
 
+    <table>
+        <tr>
+          <th></th>
+          <th ng-repeat="day in timesheet.daysOfWeek">{{day}}</th>
+        </tr>
 
-    <button onclick="calc()">Calculate</button>
+        <tr>
+          <th>Start</th>
+          <td ng-repeat="day in timesheet.daysOfWeek" class="input-group">
+            <input type="number" placeholder="HH">
+            <input type="number" placeholder="mm">
+          </td>
+          <td></td>
+        </tr>
 
-    <div>Total Time Formatted: <span id="totalTimeFormatted"></span></div>
-    <div>Total Time Fraction: <span id="totalTimeDecimal"></span></div>  
+        <tr>
+          <th>End</th>
+          <td ng-repeat="day in timesheet.daysOfWeek" class="input-group">
+            <input type="number" placeholder="HH">
+            <input type="number" placeholder="mm">
+          </td>
+        </tr>
+
+        <tr>
+          <th>Hours</th>
+          <td ng-repeat="day in timesheet.daysOfWeek"></td>
+        </tr>
+    </table>
+
+    <div>Total Hours: {{ timesheet.totalHours }}</div>
 
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/moment@2.19.1/moment.min.js" type="text/javascript"></script>
-  <script src="index.js" type="text/javascript"></script>
 
 
 </body>
