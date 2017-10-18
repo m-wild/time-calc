@@ -17,41 +17,43 @@
 
   <main ng-controller="TimesheetController as timesheet">
 
-    <pre>{{timesheet.debug}}</pre>
+    <h3>Timesheet calculator</h3>
 
-    <input name="weekStarting" ng-model="timesheet.weekStarting" type="date" />
+    <div class="week-picker">
+      <label for="weekStarting">Week Starting:</label>
+      <input id="weekStarting" ng-model="timesheet.weekStarting" type="date">
+    </div>
 
+    <div class="table">
+        <div class="head">
+          <div></div>
+          <div ng-repeat="day in timesheet.daysOfWeek">{{day}}</div>
+        </div>
 
-    <table>
-        <tr>
-          <th></th>
-          <th ng-repeat="day in timesheet.daysOfWeek">{{day}}</th>
-        </tr>
-
-        <tr>
-          <th>Start</th>
-          <td ng-repeat="day in timesheet.daysOfWeek" class="input-group">
+        <div class="row">
+          <div><strong>Start</strong></div>
+          <div ng-repeat="day in timesheet.daysOfWeek" class="input-group">
             <input type="number" placeholder="HH">
             <input type="number" placeholder="mm">
-          </td>
-          <td></td>
-        </tr>
+          </div>
+        </div>
 
-        <tr>
-          <th>End</th>
-          <td ng-repeat="day in timesheet.daysOfWeek" class="input-group">
+        <div class="row">
+          <div><strong>End</strong></div>
+          <div ng-repeat="day in timesheet.daysOfWeek" class="input-group">
             <input type="number" placeholder="HH">
             <input type="number" placeholder="mm">
-          </td>
-        </tr>
+          </div>
+        </div>
 
-        <tr>
-          <th>Hours</th>
-          <td ng-repeat="day in timesheet.daysOfWeek"></td>
-        </tr>
-    </table>
+        <div class="row">
+          <div><strong>Hours</strong></div>
+          <div ng-repeat="day in timesheet.daysOfWeek"></div>
+        </div>
+    </div>
 
-    <div>Total Hours: {{ timesheet.totalHours }}</div>
+
+    <div><strong>Total Hours: </strong>{{ timesheet.totalHours }}</div>
 
   </main>
 

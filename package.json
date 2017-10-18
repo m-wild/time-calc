@@ -1,0 +1,10 @@
+{
+  "name": "time-calc",
+  "version": "0.0.1",
+  "scripts": {
+    "serve": "node.exe node_modules/http-server/bin/http-server"
+  },
+  "devDependencies": {
+    "http-server": "*"
+  }
+}
