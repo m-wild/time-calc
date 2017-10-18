@@ -1,38 +1,49 @@
 angular.module('timesheetApp', [])
   .controller('TimesheetController', function() {
+    let ctrl = this;
 
-    this.weekStarting = moment().startOf('isoWeek').toDate();
+    ctrl.weekStarting = moment().startOf('isoWeek').toDate();
+    ctrl.daysOfWeek = [];
+    ctrl.totalHours = null;
 
-    this.daysOfWeek = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    ctrl.initDaysOfWeek = function () {
+      ctrl.daysOfWeek = [];
+      for (let i = 0; i < 7; i++) {
+        let day = {
+          moment: moment(ctrl.weekStarting).add(i, 'days'),
+        };
+        day.isWeekend = day.moment.weekday() === 0 || day.moment.weekday() === 6;
+
+        ctrl.daysOfWeek.push(day);
+      }
+    };
+    ctrl.initDaysOfWeek();
+
+
+    ctrl.calculateWorkHours = function(day) {
+      if (day.startHour === undefined || day.startMinute === undefined
+        || day.endHour === undefined|| day.endMinute === undefined) return;
+
+      let startTime = moment(`${day.startHour}:${day.startMinute}`, 'HH:mm');
+      let endTime = moment(`${day.endHour}:${day.endMinute}`, 'HH:mm');
+
+      if (endTime.hour() < startTime.hour()) endTime = endTime.add(1, 'day');
+
+      day.totalHours = endTime.diff(startTime, 'hours', true);
+
+      calculateTotalHours();
+    };
+
+    function calculateTotalHours() {
+      ctrl.totalHours = ctrl.daysOfWeek
+        .map(function(d) {
+          if (!d.totalHours) return 0;
+          return d.totalHours;
+        })
+        .reduce(function (sum, val) {
+          return sum + val;
+        }, 0);
+    }
+
 
   });
-
-function calc() {
-  const startHour = +document.getElementById('startHour').value;
-  const startMinute = +document.getElementById('startMinute').value;
-
-  const endHour = +document.getElementById('endHour').value;
-  const endMinute = +document.getElementById('endMinute').value;
-
-  const overnight = document.getElementById('overnight').checked;
-
-  let startTime = moment(`${startHour}:${startMinute}`, 'HH:mm');
-  if (!startTime.isValid())
-    window.alert('Invalid start time');
-
-  let endTime = moment(`${endHour}:${endMinute}`, 'HH:mm');
-  if (!endTime.isValid())
-    window.alert('Invalid end time');
-
-  if (overnight)
-    endTime = endTime.add(1, 'day');
-
-  let totalTimeDecimal = endTime.diff(startTime, 'hours', true);
-
-
-  document.getElementById('totalTimeFormatted').innerText =
-      moment(moment.duration(totalTimeDecimal, 'hours')._data).format('HH:mm');
-
-  document.getElementById('totalTimeDecimal').innerText = totalTimeDecimal.toFixed(2);
-
-}

@@ -15,45 +15,45 @@
 
 <body ng-app="timesheetApp">
 
-  <main ng-controller="TimesheetController as timesheet">
+  <main ng-controller="TimesheetController as ctrl">
 
     <h3>Timesheet calculator</h3>
 
     <div class="week-picker">
       <label for="weekStarting">Week Starting:</label>
-      <input id="weekStarting" ng-model="timesheet.weekStarting" type="date">
+      <input id="weekStarting" ng-model="ctrl.weekStarting" type="date" ng-change="ctrl.initDaysOfWeek();">
     </div>
 
     <div class="table">
         <div class="head">
           <div></div>
-          <div ng-repeat="day in timesheet.daysOfWeek">{{day}}</div>
+          <div ng-repeat="day in ctrl.daysOfWeek" ng-class="{'weekend': day.isWeekend }">{{day.moment.toDate() | date: 'EEEE'}}</div>
         </div>
 
         <div class="row">
           <div><strong>Start</strong></div>
-          <div ng-repeat="day in timesheet.daysOfWeek" class="input-group">
-            <input type="number" placeholder="HH">
-            <input type="number" placeholder="mm">
+          <div ng-repeat="day in ctrl.daysOfWeek track by $index" class="input-group">
+            <input type="number" placeholder="HH" ng-model="day.startHour" ng-change="ctrl.calculateWorkHours(day)" tabindex="{{$index+1}}">
+            <input type="number" placeholder="mm" ng-model="day.startMinute" ng-change="ctrl.calculateWorkHours(day)" tabindex="{{$index+1}}">
           </div>
         </div>
 
         <div class="row">
           <div><strong>End</strong></div>
-          <div ng-repeat="day in timesheet.daysOfWeek" class="input-group">
-            <input type="number" placeholder="HH">
-            <input type="number" placeholder="mm">
+          <div ng-repeat="day in ctrl.daysOfWeek track by $index" class="input-group" >
+            <input type="number" placeholder="HH" ng-model="day.endHour" ng-change="ctrl.calculateWorkHours(day)" tabindex="{{$index+1}}">
+            <input type="number" placeholder="mm" ng-model="day.endMinute" ng-change="ctrl.calculateWorkHours(day)" tabindex="{{$index+1}}">
           </div>
         </div>
 
         <div class="row">
           <div><strong>Hours</strong></div>
-          <div ng-repeat="day in timesheet.daysOfWeek"></div>
+          <div ng-repeat="day in ctrl.daysOfWeek">{{day.totalHours.toFixed(2) }}</div>
         </div>
     </div>
 
 
-    <div><strong>Total Hours: </strong>{{ timesheet.totalHours }}</div>
+    <div>Total Hours: <strong>{{ ctrl.totalHours.toFixed(2) }}</strong></div>
 
   </main>
 
